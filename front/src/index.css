@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  background-color: #0b0f14;
+  color: #e2e8f0;
+  font-family: system-ui, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Aisla los estilos que puede traer el HTML del email (inyectado por el
+   usuario) para que no se filtren fuera del contenedor del preview. */
+.email-preview :is(h1, h2, h3) {
+  margin: 0 0 8px;
+}
+.email-preview p {
+  margin: 0 0 8px;
+}
