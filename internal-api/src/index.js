@@ -24,6 +24,28 @@ app.get("/", (_req, res) => {
   res.json({ service: "internal-api", status: "ok" });
 });
 
+app.get('/api/email-assets', async (req, res) => {
+  const url = String(req.query.url ?? '')
+
+  if (!url) {
+    return res.status(400).json({ error: 'Falta el parámetro url' })
+  }
+
+  try {
+    // Vulnerabilidad intencional: acepta cualquier destino.
+    const response = await fetch(url)
+    const buffer = Buffer.from(await response.arrayBuffer())
+
+    res.status(response.status)
+    res.type(response.headers.get('content-type') ?? 'image/png')
+    return res.send(buffer)
+  } catch (error) {
+    return res.status(502).json({
+      error: 'No se pudo cargar el recurso remoto',
+    })
+  }
+})
+
 app.get('/secrets', (req, res) => {
   console.log(`[internal-api] /secrets fetched by ${req.ip}`)
 
