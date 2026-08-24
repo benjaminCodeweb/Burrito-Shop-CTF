@@ -20,9 +20,7 @@ authRouter.post("/register", (req, res) => {
   if (!name || !email || !nickname || !password) {
     return res.status(400).json({ error: "Faltan campos requeridos" });
   }
-  if (nickname.length > MAX_NICKNAME_LENGTH) {
-    return res.status(400).json({ error: `El nickname no puede tener mas de ${MAX_NICKNAME_LENGTH} caracteres.` });
-  }
+ 
   if (findUserByEmail(email)) {
     return res.status(409).json({ error: "El email ya esta registrado" });
   }
