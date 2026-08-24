@@ -12,8 +12,9 @@ import EmailPreview from './components/orders/EmailPreview'
 import AdminPanel from './components/admin/AdminPanel'
 import ProfileEditor from './components/profile/ProfileEditor'
 import type { CartLine, MenuItem, Order } from './types'
+import WriteupPage  from './components/writeup/WriteUpPage'
 
-type View = 'shopping' | 'checkout' | 'tracking' | 'profile' | 'admin'
+type View = 'shopping' | 'checkout' | 'tracking' | 'profile' | 'admin' | 'writeup'
 
 function NavButton({
   active,
@@ -53,18 +54,32 @@ function Shop() {
   }
 
   if (!user) {
-    return (
-      <div className="flex min-h-[70vh] items-center justify-center px-4">
-        <div className="w-full max-w-sm rounded-3xl border border-stone-200 bg-white p-8 shadow-lg">
+  if (view === 'writeup') {
+    return <WriteupPage onBack={() => setView('shopping')} />
+  }
+
+  return (
+    <div className="flex min-h-[70vh] items-center justify-center px-4">
+      <div className="w-full max-w-sm">
+        <div className="rounded-3xl border border-stone-200 bg-white p-8 shadow-lg">
           {authMode === 'login' ? (
             <Login onSwitchToRegister={() => setAuthMode('register')} />
           ) : (
             <Register onSwitchToLogin={() => setAuthMode('login')} />
           )}
         </div>
+
+        <button
+          type="button"
+          onClick={() => setView('writeup')}
+          className="mt-5 w-full text-center text-sm font-medium text-stone-500 hover:text-red-700"
+        >
+          Ver write-up y soluciones
+        </button>
       </div>
-    )
-  }
+    </div>
+  )
+}
 
   function incrementQty(itemId: string) {
     setCart((prev) => {
@@ -124,6 +139,14 @@ function Shop() {
               Admin
             </NavButton>
           )}
+
+          <NavButton
+  active={view === 'writeup'}
+  onClick={() => setView('writeup')}
+>
+  Write-up
+</NavButton>
+          
           <button
             onClick={logout}
             className="ml-2 rounded-full px-3.5 py-1.5 text-sm font-semibold text-stone-500 hover:bg-stone-100 hover:text-red-700"
@@ -134,6 +157,8 @@ function Shop() {
       </header>
 
       <main className="mx-auto max-w-5xl px-4 py-6 sm:px-6">
+
+        
         {view === 'shopping' && (
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_320px]">
             <Menu cart={cart} onIncrement={incrementQty} onDecrement={decrementQty} />
@@ -150,6 +175,9 @@ function Shop() {
         {view === 'checkout' && (
           <Checkout cart={cart} items={items} onBack={() => setView('shopping')} onConfirm={confirmPayment} />
         )}
+        {view === 'writeup' && (
+  <WriteupPage onBack={() => setView('shopping')} />
+)}
 
         {view === 'tracking' && activeOrderId && (
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
