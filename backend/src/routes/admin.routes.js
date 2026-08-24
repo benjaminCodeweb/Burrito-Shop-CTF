@@ -16,7 +16,7 @@ adminRouter.get("/admin/orders", (_req, res) => {
   res.json({ orders: list });
 });
 
-app.get('/admin/secrets', (_req, res) => {
+adminRouter.get('/admin/secrets', (_req, res) => {
   res.type('svg').send(`
     <svg xmlns="http://www.w3.org/2000/svg" width="900" height="260">
       <rect width="100%" height="100%" rx="24" fill="#1c1917"/>
