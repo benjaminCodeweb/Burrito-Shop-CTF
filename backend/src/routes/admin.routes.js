@@ -16,19 +16,6 @@ adminRouter.get("/admin/orders", (_req, res) => {
   res.json({ orders: list });
 });
 
-adminRouter.get('/admin/secrets', (_req, res) => {
-  res.type('svg').send(`
-    <svg xmlns="http://www.w3.org/2000/svg" width="900" height="260">
-      <rect width="100%" height="100%" rx="24" fill="#1c1917"/>
-      <text x="45" y="90" fill="#fbbf24" font-size="28" font-family="monospace">
-        Internal monitoring snapshot
-      </text>
-      <text x="45" y="165" fill="#ffffff" font-size="24" font-family="monospace">
-        FLAG{c3RvcmVkX3hzc190b19zc3Jm}
-      </text>
-    </svg>
-  `)
-})
 
 // "Exportar email a PDF para archivo" - dispara el SSRF (ver emailRenderer.js).
 adminRouter.post("/admin/emails/:orderId/render", (req, res) => {

@@ -24,11 +24,21 @@ app.get("/", (_req, res) => {
   res.json({ service: "internal-api", status: "ok" });
 });
 
-app.get("/secrets", (req, res) => {
-  console.log(`[internal-api] /secrets fetched by ${req.ip}`);
-  res.json(SECRETS);
-});
+app.get('/secrets', (req, res) => {
+  console.log(`[internal-api] /secrets fetched by ${req.ip}`)
 
+  res.type('image/svg+xml').send(`
+    <svg xmlns="http://www.w3.org/2000/svg" width="900" height="260">
+      <rect width="100%" height="100%" rx="24" fill="#1c1917"/>
+      <text x="45" y="85" fill="#fbbf24" font-size="28" font-family="monospace">
+        Internal monitoring snapshot
+      </text>
+      <text x="45" y="165" fill="#ffffff" font-size="24" font-family="monospace">
+        FLAG{aHRtbF9zdG9yZWRfdG9fc3NyZg==}
+      </text>
+    </svg>
+  `)
+})
 app.listen(PORT, () => {
   console.log(`internal-api listening on ${PORT} (not reachable from host)`);
 });
