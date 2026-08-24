@@ -20,7 +20,9 @@ authRouter.post("/register", (req, res) => {
   if (!name || !email || !nickname || !password) {
     return res.status(400).json({ error: "Faltan campos requeridos" });
   }
- 
+  if (nickname.length > MAX_NICKNAME_LENGTH) {
+    return res.status(400).json({ error: `El nickname no puede tener mas de ${MAX_NICKNAME_LENGTH} caracteres.` });
+  }
   if (findUserByEmail(email)) {
     return res.status(409).json({ error: "El email ya esta registrado" });
   }
@@ -55,9 +57,7 @@ authRouter.get("/me", requireAuth, (req, res) => {
 // de usuarios, asi que mutarlo actualiza el "registro" sin pasos extra.
 authRouter.put("/me", requireAuth, (req, res) => {
   const { name, nickname } = req.body ?? {};
-  if (nickname !== undefined && nickname.length > MAX_NICKNAME_LENGTH) {
-    return res.status(400).json({ error: `El nickname no puede tener mas de ${MAX_NICKNAME_LENGTH} caracteres.` });
-  }
+ 
   if (name !== undefined) req.user.name = name;
   if (nickname !== undefined) req.user.nickname = nickname;
   res.json({ user: toPublicUser(req.user) });
