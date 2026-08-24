@@ -19,12 +19,6 @@ app.use("/api", authRouter);
 app.use("/api", menuRouter);
 app.use("/api", ordersRouter);
 app.use("/api", emailsRouter);
-app.use("/api", adminRouter);
-
-app.get("/health", (_req, res) => res.json({ status: "ok" }));
-
-seedAdmin();
-
 app.get('/api/email-assets', async (req, res) => {
   const url = String(req.query.url ?? '')
 
@@ -46,6 +40,12 @@ app.get('/api/email-assets', async (req, res) => {
     })
   }
 })
+app.use("/api", adminRouter);
+
+app.get("/health", (_req, res) => res.json({ status: "ok" }));
+
+seedAdmin();
+
 
 app.listen(config.port, () => {
   console.log(`backend listening on ${config.port}`);
